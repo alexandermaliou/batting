@@ -1,0 +1,33 @@
+<% unless average_present? %>
+  <div class="container m-5">
+    Please upload CSV <%= link_to 'here', new_batting_average_path %> <br>Or
+    Please refresh the page and check after sometime.
+  </div>
+<% else %>
+  <nav class="navbar navbar-light bg-light">
+    <%= form_tag batting_averages_path, class: 'form-inline', method: :get do %>
+      <%= text_field_tag 'player_id', params[:player_id], placeholder: "Enter player id", class: 'form-control mr-sm-2' %>
+      <%= select_tag 'year_id', options_for_select(BattingAverage.fetch_years, params[:year_id]), { prompt: "Year", class: "form-control mr-sm-2" } %>
+      <%= submit_tag 'Search!', class: 'btn btn-outline-success my-2 my-sm-0' %>
+    <% end %>
+  </nav>
+  <div class="container mt-5">
+    <h1 class="text-center">Batting Averages</h1>
+    <table class="table table-striped text-center">
+      <thead>
+        <td>PlayerID</td>
+        <td>Team name</td>
+        <td>YearID</td>
+        <td>Batting Average </td>
+      </thead>
+      <% @batting_averages.each do |batting_average| %>
+      <tr>
+        <td><%= batting_average.player_id %></td>
+        <td><%= batting_average.team_name %></td>
+        <td><%= batting_average.year_id %></td>
+        <td><%= batting_average.average %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
